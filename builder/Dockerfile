@@ -6,14 +6,21 @@ RUN apt update && \
 		apt-transport-https \
 		build-essential \
         binutils \
+        patchelf \
         lsb-release \
+        file \
 		cmake \
 		wget \
 		ninja-build \
 		libsdl2-dev \
 		libsdl2-net-dev \
 		libpng-dev \
-		libglew-dev
+		libglew-dev \
+        libpulse-dev \
+        zlib1g-dev \
+        libbz2-dev \
+        lld \
+        imagemagick
 
 # Install SDL2 2.26.1
 RUN wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz && \

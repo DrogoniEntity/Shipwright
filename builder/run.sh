@@ -32,10 +32,12 @@ print_help()
 {
     echo "Available commands:" > $1
     echo "--------------------" > $1
-    echo " - init: Initialize base project" > $1
+    echo " - init: Initialize project" > $1
     echo " - extract-assets: Extract assets (need to put a valid rom into \"OTRExporter\")" > $1
-    echo " - init-switch: Initialize project for building on Nintendo Switch" > $1
-    echo " - build-switch: Build project for Nintendo Switch" > $1
+    echo " - build: Build for Linux" > $1
+    echo " - init-switch: Initialize project for Nintendo Switch" > $1
+    echo " - build-switch: Build for Nintendo Switch" > $1
+    echo " - clean: Delete build directory" > $1
     echo " - bash: Run bash into container" > $1
 }
 
@@ -66,16 +68,22 @@ fi
 # Everything is ready, now begin to execute tasks...
 case "$1" in
     "init")
-        run_docker cmake -S. -Bbuild/base -GNinja
+        run_docker cmake -S. -Bbuild/linux -GNinja
         ;;
     "extract-assets")
-        run_docker cmake --build build/base --target ExtractAssets
+        run_docker cmake --build build/linux --target ExtractAssets
+        ;;
+    "build")
+        run_docker cmake --build build/linux --config Release --target package -j3
         ;;
     "init-switch")
         run_docker cmake -S. -Bbuild/nx -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
         ;;
     "build-switch")
-        run_docker cmake --build build/nx --target soh_nro
+        run_docker cmake --build build/nx --config Release --target soh_nro -j3
+        ;;
+    "clean")
+        rm -rf "$RUN_DIRECTORY/../build"
         ;;
     "bash")
         run_docker /bin/bash
