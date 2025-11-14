@@ -31,6 +31,8 @@
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/frame_interpolation.h"
 
+#include "soh/CustomMod.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -11134,38 +11136,39 @@ void Player_Update(Actor* thisx, PlayState* play) {
 
     // Make Link normal size when going through doors and crawlspaces and when climbing ladders.
     // Otherwise Link can glitch out, being in unloaded rooms or falling OoB.
+    float customScale = CVarGetFloat(CUSTOMMOD_CUSTOM_SCALE_KEY, 1.0f);
     if (this->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER || this->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE ||
         this->stateFlags2 & PLAYER_STATE2_CRAWLING) {
-        this->actor.scale.x = 0.01f;
-        this->actor.scale.y = 0.01f;
-        this->actor.scale.z = 0.01f;
+        this->actor.scale.x = 0.01f * customScale;
+        this->actor.scale.y = 0.01f * customScale;
+        this->actor.scale.z = 0.01f * customScale;
     } else {
         switch (GameInteractor_GetLinkSize()) {
             case GI_LINK_SIZE_RESET:
-                this->actor.scale.x = 0.01f;
-                this->actor.scale.y = 0.01f;
-                this->actor.scale.z = 0.01f;
+                this->actor.scale.x = 0.01f * customScale;
+                this->actor.scale.y = 0.01f * customScale;
+                this->actor.scale.z = 0.01f * customScale;
                 GameInteractor_SetLinkSize(GI_LINK_SIZE_NORMAL);
                 break;
             case GI_LINK_SIZE_GIANT:
-                this->actor.scale.x = 0.02f;
-                this->actor.scale.y = 0.02f;
-                this->actor.scale.z = 0.02f;
+                this->actor.scale.x = 0.02f * customScale;
+                this->actor.scale.y = 0.02f * customScale;
+                this->actor.scale.z = 0.02f * customScale;
                 break;
             case GI_LINK_SIZE_MINISH:
-                this->actor.scale.x = 0.001f;
-                this->actor.scale.y = 0.001f;
-                this->actor.scale.z = 0.001f;
+                this->actor.scale.x = 0.001f * customScale;
+                this->actor.scale.y = 0.001f * customScale;
+                this->actor.scale.z = 0.001f * customScale;
                 break;
             case GI_LINK_SIZE_PAPER:
-                this->actor.scale.x = 0.001f;
-                this->actor.scale.y = 0.01f;
-                this->actor.scale.z = 0.01f;
+                this->actor.scale.x = 0.001f * customScale;
+                this->actor.scale.y = 0.01f * customScale;
+                this->actor.scale.z = 0.01f * customScale;
                 break;
             case GI_LINK_SIZE_SQUISHED:
-                this->actor.scale.x = 0.015f;
-                this->actor.scale.y = 0.001f;
-                this->actor.scale.z = 0.015f;
+                this->actor.scale.x = 0.015f * customScale;
+                this->actor.scale.y = 0.001f * customScale;
+                this->actor.scale.z = 0.015f * customScale;
                 break;
             case GI_LINK_SIZE_NORMAL:
             default:

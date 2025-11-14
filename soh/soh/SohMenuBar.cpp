@@ -28,6 +28,8 @@
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/randomizer_settings_window.h"
 
+#include "CustomMod.h"
+
 extern bool isBetaQuestEnabled;
 
 extern "C" PlayState* gPlayState;
@@ -1669,6 +1671,9 @@ void SohMenuBar::DrawElement() {
         ImGui::SetCursorPosY(0.0f);
 
         DrawRandomizerMenu();
+
+        ImGui::SetCursorPosY(0.0f);
+        CustomMod_DrawCustomMenu();
 
         ImGui::PopStyleVar(1);
         ImGui::EndMenuBar();
