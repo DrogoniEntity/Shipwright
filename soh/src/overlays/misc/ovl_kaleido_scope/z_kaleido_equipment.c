@@ -2,6 +2,8 @@
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/parameter_static/parameter_static.h"
 
+#include "soh/CustomMod.h"
+
 static u8 sChildUpgrades[] = { UPG_BULLET_BAG, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 static u8 sAdultUpgrades[] = { UPG_QUIVER, UPG_BOMB_BAG, UPG_STRENGTH, UPG_SCALE };
 
@@ -691,6 +693,9 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
             int itemId = ITEM_SWORD_KOKIRI + temp;
             bool age_restricted = !CHECK_AGE_REQ_ITEM(itemId);
+            if (CVarGetInteger(CUSTOMMOD_TIMELESS_TUNICS, 0) && itemId >= ITEM_TUNIC_KOKIRI && itemId <= ITEM_BOOTS_HOVER)
+                age_restricted = false;
+
             if (age_restricted) {
                 gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                 gSPGrayscale(POLY_KAL_DISP++, true);

@@ -24,6 +24,10 @@ void CustomMod_DrawCustomMenu()
         UIWidgets::PaddedEnhancementCheckbox("Hide equipments on back", CUSTOMMOD_HIDE_EQUIP_ON_BACK, true, false);
         UIWidgets::Tooltip("Never display sword and shield on player's back even if sword or shield is equipped");
 
+        // Timeless tunics and boots
+        UIWidgets::PaddedEnhancementCheckbox("Timeless tunics and boots", CUSTOMMOD_TIMELESS_TUNICS, true, false);
+        UIWidgets::Tooltip("Allow to equip any tunics and boots regardless to player's age");
+
         // Custom Scale
         if (UIWidgets::EnhancementSliderFloat("Player Scale", "##PlayerScale", CUSTOMMOD_CUSTOM_SCALE_KEY, 0.3f, 4.0f, "%f", 1.0f, false))
         {

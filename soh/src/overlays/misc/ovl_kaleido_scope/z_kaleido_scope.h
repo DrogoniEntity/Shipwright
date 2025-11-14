@@ -4,6 +4,8 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
+#include "soh/CustomMod.h"
+
 extern u8 gAmmoItems[];
 extern s16 D_8082AAEC[];
 extern s16 D_8082AB2C[];
@@ -21,7 +23,7 @@ extern bool gSelectingMask;
 #define AGE_REQ_CHILD LINK_AGE_CHILD
 #define AGE_REQ_NONE 9
 
-#define CHECK_AGE_REQ_EQUIP(i, j) (CVarGetInteger("gTimelessEquipment", 0) || (gEquipAgeReqs[i][j] == AGE_REQ_NONE) || (gEquipAgeReqs[i][j] == ((void)0, gSaveContext.linkAge)))
+#define CHECK_AGE_REQ_EQUIP(i, j) (CVarGetInteger("gTimelessEquipment", 0) || (CVarGetInteger(CUSTOMMOD_TIMELESS_TUNICS, 0) && i >= 2 && j >= 1) || (gEquipAgeReqs[i][j] == AGE_REQ_NONE) || (gEquipAgeReqs[i][j] == ((void)0, gSaveContext.linkAge)))
 #define CHECK_AGE_REQ_SLOT(slotIndex) (CVarGetInteger("gTimelessEquipment", 0) || (gSlotAgeReqs[slotIndex] == AGE_REQ_NONE) || gSlotAgeReqs[slotIndex] == ((void)0, gSaveContext.linkAge))
 #define CHECK_AGE_REQ_ITEM(itemIndex) (CVarGetInteger("gTimelessEquipment", 0) || (gItemAgeReqs[itemIndex] == AGE_REQ_NONE) || (gItemAgeReqs[itemIndex] == gSaveContext.linkAge))
 
