@@ -447,6 +447,7 @@ _deps
 _packages
 */extract_assets_cmake*
 /build*
+!/builder
 
 soh/build.c
 soh/properties.h

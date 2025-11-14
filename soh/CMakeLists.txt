@@ -247,6 +247,9 @@ source_group("src\\overlays\\actors" REGULAR_EXPRESSION "src/overlays/actors/*")
 source_group("src\\overlays\\effects" REGULAR_EXPRESSION "src/overlays/effects/*")
 source_group("src\\overlays\\gamestates" REGULAR_EXPRESSION  "src/overlays/gamestates/*")
 source_group("src\\overlays\\misc" REGULAR_EXPRESSION  "src/overlays/misc/*")
+
+# Adding more flexibility while compiling Z64 source code
+set_source_files_properties(${src__} PROPERTIES COMPILE_OPTIONS "-std=gnu99;-Wno-int-conversion;-Wno-return-mismatch;-Wno-implicit-int")
 # }}}
 
 set(ALL_FILES
@@ -785,9 +788,9 @@ endif()
 if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch")
 
 nx_generate_nacp(Ship.nacp
-   NAME "Ship of Harkinian"
+   NAME "Ship of Harkinian (Custom)"
    AUTHOR "${PROJECT_TEAM}"
-   VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
+   VERSION "${CMAKE_PROJECT_VERSION}-fork"
 )
 
 nx_create_nro(soh
@@ -802,8 +805,8 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "CafeOS")
 wut_create_rpx(${PROJECT_NAME})
 
 wut_create_wuhb(${PROJECT_NAME}
-	NAME       "Ship of Harkinian"
-	SHORTNAME  "SoH"
+	NAME       "Ship of Harkinian (Custom)"
+	SHORTNAME  "SoH-Custom"
 	AUTHOR     "${PROJECT_TEAM}"
 	ICON       ${CMAKE_CURRENT_SOURCE_DIR}/icon.jpg
 )
