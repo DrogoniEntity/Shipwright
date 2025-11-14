@@ -16,13 +16,6 @@ extern PlayState* gPlayState;
 
 static void CustomMod_UpdatePlayerScale();
 
-void CustomMod_RegisterCustomScaleMod()
-{
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](uint32_t sceneNum) {
-       CustomMod_UpdatePlayerScale();
-    });
-}
-
 void CustomMod_DrawCustomMenu()
 {
     if (ImGui::BeginMenu("Custom"))

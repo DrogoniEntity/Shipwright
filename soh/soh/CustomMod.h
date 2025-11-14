@@ -8,7 +8,6 @@ extern "C" {
 #define CUSTOMMOD_CUSTOM_SCALE_KEY "custom.scale"
 #define CUSTOMMOD_HIDE_EQUIP_ON_BACK "custom.hideEquipOnBack"
 
-void CustomMod_RegisterCustomScaleMod();
 void CustomMod_DrawCustomMenu();
 
 #ifdef __cplusplus

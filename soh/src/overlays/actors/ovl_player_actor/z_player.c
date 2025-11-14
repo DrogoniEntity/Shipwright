@@ -9619,6 +9619,9 @@ void Player_InitCommon(Player* this, PlayState* play, FlexSkeletonHeader* skelHe
     Collider_SetQuad(play, &this->shieldQuad, &this->actor, &D_808546A0);
 
     this->ivanDamageMultiplier = 1;
+
+    float customScale = CVarGetFloat(CUSTOMMOD_CUSTOM_SCALE_KEY, 1.0f) / 100;
+    Actor_SetScale(&this->actor, customScale);
 }
 
 static void (*D_80854738[])(PlayState* play, Player* this) = {
