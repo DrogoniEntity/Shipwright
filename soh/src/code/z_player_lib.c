@@ -9,6 +9,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/draw.h"
 
+#include "soh/CustomMod.h"
+
 #include <stdlib.h>
 
 typedef struct {
@@ -1315,7 +1317,7 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                 dLists = &sSheathWithSwordDLs[PLAYER_SHIELD_MAX * 4];
             }
 
-            if (dLists[sDListsLodOffset] != NULL && (this->currentShield != PLAYER_SHIELD_NONE || !gSaveContext.infTable[29])) {
+            if (dLists[sDListsLodOffset] != NULL && (this->currentShield != PLAYER_SHIELD_NONE || !gSaveContext.infTable[29]) && !CVarGetInteger(CUSTOMMOD_HIDE_EQUIP_ON_BACK, 0)) {
                 *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
             } else {
                 *dList = NULL;

@@ -27,6 +27,11 @@ void CustomMod_DrawCustomMenu()
 {
     if (ImGui::BeginMenu("Custom"))
     {
+        // Hide equipment on back
+        UIWidgets::PaddedEnhancementCheckbox("Hide equipments on back", CUSTOMMOD_HIDE_EQUIP_ON_BACK, true, false);
+        UIWidgets::Tooltip("Never display sword and shield on player's back even if sword or shield is equipped");
+
+        // Custom Scale
         if (UIWidgets::EnhancementSliderFloat("Player Scale", "##PlayerScale", CUSTOMMOD_CUSTOM_SCALE_KEY, 0.3f, 4.0f, "%f", 1.0f, false))
         {
             CustomMod_UpdatePlayerScale();
