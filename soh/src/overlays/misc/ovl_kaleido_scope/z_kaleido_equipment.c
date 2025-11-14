@@ -517,18 +517,16 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
 
                     // Allow Link to remove his equipment from the equipment subscreen by toggling on/off
-                    // Shields will be un-equipped entirely, and tunics/boots will revert to Kokiri Tunic/Kokiri Boots
-                    // Only BGS/Giant's Knife is affected, and it will revert to Master Sword.
+                    // Only sword and shields can be un-equipped
 
                     // If we have the feature toggled on
                     if (CVarGetInteger("gEquipmentCanBeRemoved", 0)) {
                         
-                        // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped BGS/Giant's Knife
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == 3 
-                            && CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD) == EQUIP_VALUE_SWORD_BIGGORON && CHECK_OWNED_EQUIP(EQUIP_TYPE_SWORD, EQUIP_INV_SWORD_MASTER)){ // And we have the Master Sword
-                            Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_MASTER); // "Unequip" it by equipping Master Sword
-                            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-                            gSaveContext.infTable[29] = 0;
+                        // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped sword
+                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TYPE_SWORD)) {
+                            Inventory_ChangeEquipment(EQUIP_TYPE_SWORD, EQUIP_VALUE_SWORD_NONE); // Unequip it
+                            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                            gSaveContext.infTable[29] = 1;
                             goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
                         }
 
@@ -536,18 +534,6 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                         if (pauseCtx->cursorY[PAUSE_EQUIP] == 1 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TYPE_SHIELD)) {
                             Inventory_ChangeEquipment(EQUIP_TYPE_SHIELD, EQUIP_VALUE_SHIELD_NONE); // Unequip it
                             goto RESUME_EQUIPMENT;                      // Skip to here so we don't re-equip it
-                        }
-
-                        // If we're on the "tunics" section of the equipment screen AND we're on a currently-equipped tunic
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 2 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TYPE_TUNIC)) {
-                            Inventory_ChangeEquipment(EQUIP_TYPE_TUNIC, EQUIP_VALUE_TUNIC_KOKIRI); // "Unequip" it (by equipping Kokiri Tunic)
-                            goto RESUME_EQUIPMENT;                     // Skip to here so we don't re-equip it
-                        }
-
-                        // If we're on the "boots" section of the equipment screen AND we're on currently-equipped boots
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 3 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TYPE_BOOTS)) {
-                            Inventory_ChangeEquipment(EQUIP_TYPE_BOOTS, EQUIP_VALUE_BOOTS_KOKIRI); // "Unequip" it (by equipping Kokiri Boots)
-                            goto RESUME_EQUIPMENT;                     // Skip to here so we don't re-equip it
                         }
                     }
 
