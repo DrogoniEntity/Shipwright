@@ -24,6 +24,8 @@
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 #include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 
+#include "soh/CustomMod.h"
+
 extern "C" {
 #include <z64.h>
 #include "macros.h"
@@ -1099,4 +1101,5 @@ void InitMods() {
     RegisterRandomizerSheikSpawn();
     RegisterRandomizedEnemySizes();
     NameTag_RegisterHooks();
+    CustomMod_RegisterRandomScaleHooks();
 }

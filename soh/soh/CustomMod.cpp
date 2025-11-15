@@ -29,19 +29,68 @@ void CustomMod_DrawCustomMenu()
         UIWidgets::Tooltip("Allow to equip any tunics and boots regardless to player's age");
 
         // Custom Scale
-        if (UIWidgets::EnhancementSliderFloat("Player Scale", "##PlayerScale", CUSTOMMOD_CUSTOM_SCALE_KEY, 0.3f, 4.0f, "%f", 1.0f, false))
+        if (UIWidgets::EnhancementSliderFloat("Player Scale", "##PlayerScale", CUSTOMMOD_CUSTOM_SCALE, 0.3f, 4.0f, "%.2f", 1.0f, false))
         {
             CustomMod_UpdatePlayerScale();
         }
         ImGui::SameLine();
         if (ImGui::Button("Reset"))
         {
-            CVarClear(CUSTOMMOD_CUSTOM_SCALE_KEY);
+            CVarClear(CUSTOMMOD_CUSTOM_SCALE);
             CustomMod_UpdatePlayerScale();
         }
 
+        // Random Scale
+        UIWidgets::PaddedEnhancementCheckbox("Random Player Scale", CUSTOMMOD_RANDOM_SCALE, true, false);
+        UIWidgets::Tooltip("Make player's scale to change dynamically while playing and loading new scene (change between 1.0 to 2.0)");
+
         ImGui::EndMenu();
     }
+}
+
+void CustomMod_RegisterRandomScaleHooks()
+{
+    static int frameToWait = 0;
+    static float targetScale = 1.0f;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (gPlayState == nullptr || !CVarGetInteger(CUSTOMMOD_RANDOM_SCALE, 0))
+            return;
+
+        frameToWait--;
+        if (frameToWait <= 0)
+        {
+            if ((rand() % 3) == 0)
+            {
+                targetScale = 1.0f;
+            }
+            else
+            {
+                // Range : 1.1 <-> 2.0 (step = 0.1)
+                int selection = rand() % /*((2.0 - 1.1) * 10) + 1*/10;
+                targetScale = 1.1f + (((float) selection) / 10.0f);
+            }
+
+            frameToWait = rand() % 160 + 160;
+        }
+
+        float newScale = CVarGetFloat(CUSTOMMOD_CUSTOM_SCALE, 1.0f);
+        if (newScale != targetScale)
+        {
+            if (newScale > (targetScale - 0.02) && newScale < (targetScale + 0.02))
+                newScale = targetScale;
+            else if (newScale < targetScale)
+                newScale += 0.01;
+            else
+                newScale -= 0.01;
+            CVarSetFloat(CUSTOMMOD_CUSTOM_SCALE, newScale);
+            CustomMod_UpdatePlayerScale();
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](uint16_t sceneNum) {
+        // Request to change scale on scene load
+        frameToWait = 0;
+    });
 }
 
 static void CustomMod_UpdatePlayerScale()
@@ -49,7 +98,7 @@ static void CustomMod_UpdatePlayerScale()
     if (gPlayState == nullptr)
         return;
 
-    float scale = CVarGetFloat(CUSTOMMOD_CUSTOM_SCALE_KEY, 1.0f) / 100.0f;
+    float scale = CVarGetFloat(CUSTOMMOD_CUSTOM_SCALE, 1.0f) / 100.0f;
     Player* player = GET_PLAYER(gPlayState);
 
     player->actor.scale.x = scale;
