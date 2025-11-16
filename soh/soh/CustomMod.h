@@ -10,6 +10,7 @@ extern "C" {
 
 #define CUSTOMMOD_HIDE_EQUIP_ON_BACK "custom.hideEquipOnBack"
 #define CUSTOMMOD_TIMELESS_TUNICS "custom.timelessTunics"
+#define CUSTOMMOD_SYNC_TUNICS "custom.syncTunics"
 
 void CustomMod_DrawCustomMenu();
 

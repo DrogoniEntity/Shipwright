@@ -28,6 +28,10 @@ void CustomMod_DrawCustomMenu()
         UIWidgets::PaddedEnhancementCheckbox("Timeless tunics and boots", CUSTOMMOD_TIMELESS_TUNICS, true, false);
         UIWidgets::Tooltip("Allow to equip any tunics and boots regardless to player's age");
 
+        // Sync tunics and boots between ages
+        UIWidgets::PaddedEnhancementCheckbox("Sync tunics and boots between age", CUSTOMMOD_SYNC_TUNICS);
+        UIWidgets::Tooltip("Synchronize equiped tunics and boots between player's age. Work only of all player's age can equip it.");
+
         // Custom Scale
         if (UIWidgets::EnhancementSliderFloat("Player Scale", "##PlayerScale", CUSTOMMOD_CUSTOM_SCALE, 0.3f, 4.0f, "%.2f", 1.0f, false))
         {
