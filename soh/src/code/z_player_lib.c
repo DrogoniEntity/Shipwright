@@ -1317,7 +1317,7 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
                 dLists = &sSheathWithSwordDLs[PLAYER_SHIELD_MAX * 4];
             }
 
-            if (dLists[sDListsLodOffset] != NULL && (this->currentShield != PLAYER_SHIELD_NONE || !gSaveContext.infTable[29]) && !CVarGetInteger(CUSTOMMOD_HIDE_EQUIP_ON_BACK, 0)) {
+            if (dLists[sDListsLodOffset] != NULL && (this->currentShield != PLAYER_SHIELD_NONE || !gSaveContext.infTable[29]) && !CustomMod_IsHideEquipOnBack()) {
                 *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
             } else {
                 *dList = NULL;

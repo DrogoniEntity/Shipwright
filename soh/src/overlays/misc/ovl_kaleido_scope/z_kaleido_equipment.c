@@ -565,20 +565,6 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                         RESUME_EQUIPMENT_SWORD:
                         Interface_LoadItemIcon1(play, 0);
                     }
-                    else if ((pauseCtx->cursorY[PAUSE_EQUIP] == 2 || pauseCtx->cursorY[PAUSE_EQUIP] == 3) && CVarGetInteger(CUSTOMMOD_SYNC_TUNICS, 0))
-                    {
-                        u8 age_restriction = gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]];
-                        if (age_restriction != gSaveContext.linkAge || CVarGetInteger("gTimelessEquipment", 0) || CVarGetInteger(CUSTOMMOD_TIMELESS_TUNICS, 0))
-                        {
-                            s16 equipMask = gEquipNegMasks[pauseCtx->cursorY[PAUSE_EQUIP]];
-                            s16 value = pauseCtx->cursorX[PAUSE_EQUIP] << gEquipShifts[pauseCtx->cursorY[PAUSE_EQUIP]];
-
-                            gSaveContext.childEquips.equipment &= equipMask;
-                            gSaveContext.childEquips.equipment |= value;
-                            gSaveContext.adultEquips.equipment &= equipMask;
-                            gSaveContext.adultEquips.equipment |= value;
-                        }
-                    }
 
                     Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                     pauseCtx->unk_1E4 = 7;
@@ -707,7 +693,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
 
             int itemId = ITEM_SWORD_KOKIRI + temp;
             bool age_restricted = !CHECK_AGE_REQ_ITEM(itemId);
-            if (CVarGetInteger(CUSTOMMOD_TIMELESS_TUNICS, 0) && itemId >= ITEM_TUNIC_KOKIRI && itemId <= ITEM_BOOTS_HOVER)
+            if (CustomMod_IsTimelessTunics() && itemId >= ITEM_TUNIC_KOKIRI && itemId <= ITEM_BOOTS_HOVER)
                 age_restricted = false;
 
             if (age_restricted) {

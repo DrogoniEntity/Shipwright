@@ -3,6 +3,9 @@
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/parameter_static/parameter_static.h"
 
+#include "src/overlays/misc/ovl_kaleido_scope/z_kaleido_scope.h"
+#include "soh/CustomMod.h"
+
 // Bit Flag array in which gBitFlags[n] is literally (1 << n)
 u32 gBitFlags[] = {
     (1 << 0),  (1 << 1),  (1 << 2),  (1 << 3),  (1 << 4),  (1 << 5),  (1 << 6),  (1 << 7),
@@ -186,6 +189,18 @@ u8 gItemSlots[] = {
 void Inventory_ChangeEquipment(s16 equipment, u16 value) {
     gSaveContext.equips.equipment &= gEquipNegMasks[equipment];
     gSaveContext.equips.equipment |= value << gEquipShifts[equipment];
+
+    if ((equipment == 2 || equipment == 3) && CustomMod_IsSyncTunics())
+    {
+        u8 age_restriction = gEquipAgeReqs[equipment][value];
+        if (age_restriction != gSaveContext.linkAge || CVarGetInteger("gTimelessEquipment", 0) || CustomMod_IsTimelessTunics())
+        {
+            gSaveContext.childEquips.equipment &= gEquipNegMasks[equipment];
+            gSaveContext.childEquips.equipment |= value << gEquipShifts[equipment];
+            gSaveContext.adultEquips.equipment &= gEquipNegMasks[equipment];
+            gSaveContext.adultEquips.equipment |= value << gEquipShifts[equipment];
+        }
+    }
 }
 
 u8 Inventory_DeleteEquipment(PlayState* play, s16 equipment) {

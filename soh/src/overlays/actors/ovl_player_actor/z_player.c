@@ -9620,7 +9620,7 @@ void Player_InitCommon(Player* this, PlayState* play, FlexSkeletonHeader* skelHe
 
     this->ivanDamageMultiplier = 1;
 
-    float customScale = CVarGetFloat(CUSTOMMOD_CUSTOM_SCALE, 1.0f) / 100;
+    float customScale = CustomMod_GetCustomScale() / 100;
     Actor_SetScale(&this->actor, customScale);
 }
 
@@ -11139,7 +11139,7 @@ void Player_Update(Actor* thisx, PlayState* play) {
 
     // Make Link normal size when going through doors and crawlspaces and when climbing ladders.
     // Otherwise Link can glitch out, being in unloaded rooms or falling OoB.
-    float customScale = CVarGetFloat(CUSTOMMOD_CUSTOM_SCALE, 1.0f);
+    float customScale = CustomMod_GetCustomScale();
     if (this->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER || this->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE ||
         this->stateFlags2 & PLAYER_STATE2_CRAWLING) {
         this->actor.scale.x = 0.01f * customScale;

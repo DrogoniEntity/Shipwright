@@ -12,8 +12,14 @@ extern "C"
     #include "macros.h"
 }
 
+/**
+ * Play statement.
+ */
 extern PlayState* gPlayState;
 
+/**
+ * Update player's actor scale with custom scale.
+ */
 static void CustomMod_UpdatePlayerScale();
 
 void CustomMod_DrawCustomMenu()
@@ -33,7 +39,7 @@ void CustomMod_DrawCustomMenu()
         UIWidgets::Tooltip("Synchronize equiped tunics and boots between player's age. Work only of all player's age can equip it.");
 
         // Custom Scale
-        if (UIWidgets::EnhancementSliderFloat("Player Scale", "##PlayerScale", CUSTOMMOD_CUSTOM_SCALE, 0.3f, 4.0f, "%.2f", 1.0f, false))
+        if (UIWidgets::EnhancementSliderFloat("Custom Scale", "##PlayerScale", CUSTOMMOD_CUSTOM_SCALE, 0.3f, 4.0f, "%.2f", 1.0f, false))
         {
             CustomMod_UpdatePlayerScale();
         }
@@ -45,7 +51,7 @@ void CustomMod_DrawCustomMenu()
         }
 
         // Random Scale
-        UIWidgets::PaddedEnhancementCheckbox("Random Player Scale", CUSTOMMOD_RANDOM_SCALE, true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Random Player Growth", CUSTOMMOD_RANDOM_SCALE, true, false);
         UIWidgets::Tooltip("Make player's scale to change dynamically while playing and loading new scene (change between 1.0 to 2.0)");
 
         ImGui::EndMenu();
@@ -57,12 +63,14 @@ void CustomMod_RegisterRandomScaleHooks()
     static int frameToWait = 0;
     static float targetScale = 1.0f;
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (gPlayState == nullptr || !CVarGetInteger(CUSTOMMOD_RANDOM_SCALE, 0))
+        // Do nothing if play context or mod isn't enabled
+        if (gPlayState == nullptr || !CustomMod_IsRandomScale())
             return;
 
         frameToWait--;
         if (frameToWait <= 0)
         {
+            // Give more probability to keep normal scale than bigger scale
             if ((rand() % 3) == 0)
             {
                 targetScale = 1.0f;
@@ -77,7 +85,8 @@ void CustomMod_RegisterRandomScaleHooks()
             frameToWait = rand() % 160 + 160;
         }
 
-        float newScale = CVarGetFloat(CUSTOMMOD_CUSTOM_SCALE, 1.0f);
+        // Progressively change player's scale between each update
+        float newScale = CustomMod_GetCustomScale();
         if (newScale != targetScale)
         {
             if (newScale > (targetScale - 0.02) && newScale < (targetScale + 0.02))
@@ -102,7 +111,7 @@ static void CustomMod_UpdatePlayerScale()
     if (gPlayState == nullptr)
         return;
 
-    float scale = CVarGetFloat(CUSTOMMOD_CUSTOM_SCALE, 1.0f) / 100.0f;
+    float scale = CustomMod_GetCustomScale() / 100.0f;
     Player* player = GET_PLAYER(gPlayState);
 
     player->actor.scale.x = scale;
