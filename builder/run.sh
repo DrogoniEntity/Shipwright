@@ -67,21 +67,6 @@ fi
 
 # Everything is ready, now begin to execute tasks...
 case "$1" in
-    "init")
-        run_docker cmake -S. -Bbuild/linux -GNinja
-        ;;
-    "extract-assets")
-        run_docker cmake --build build/linux --target ExtractAssets
-        ;;
-    "build")
-        run_docker cmake --build build/linux --config Release --target package -j3
-        ;;
-    "init-switch")
-        run_docker cmake -S. -Bbuild/nx -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
-        ;;
-    "build-switch")
-        run_docker cmake --build build/nx --config Release --target soh_nro -j3
-        ;;
     "clean")
         rm -rf "$RUN_DIRECTORY/../build"
         ;;
@@ -92,9 +77,13 @@ case "$1" in
         print_help /dev/stdout
         ;;
     *)
-        echo "Unknown command: $1" > /dev/stderr
-        echo > /dev/stderr
-        print_help /dev/stderr
-        exit 1
+        if [ -f "$RUN_DIRECTORY/actions/$1.sh" ] ; then
+            run_docker /bin/bash "/soh/builder/actions/$1.sh"
+        else
+            echo "Unknown command: $1" > /dev/stderr
+            echo > /dev/stderr
+            print_help /dev/stderr
+            exit 1
+        fi
         ;;
 esac

@@ -1,29 +1,31 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/cpp
 {
 	"name": "SoH",
+	"workspaceMount": "type=bind,src=${localWorkspaceFolder},dst=/soh",
+	"workspaceFolder": "/soh",
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+	"features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+	},
 
-	// Configure tool-specific properties.
 	"customizations": {
-		// Configure properties specific to VS Code.
 		"vscode": {
-			"settings": {},
+			"settings": {
+				"C_Cpp.files.exclude": {
+					"**/.vscode": true,
+					"**/.devcontainer": true,
+					"**/_packages": true,
+					"**/.git**": true,
+					"**/build": true,
+					"**/builder": true,
+					"**/docs": true,
+					"**/CMake": true,
+					"**/scripts": true
+				}
+			},
 			"extensions": []
 		}
 	}
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "gcc -v",
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
 }
