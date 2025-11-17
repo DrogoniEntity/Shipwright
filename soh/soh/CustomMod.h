@@ -45,6 +45,11 @@ extern "C"
  */
 #define CUSTOMMOD_SYNC_TUNICS "custom.syncTunics"
 
+/**
+ * Configuration key "Show clock".
+ */
+#define CUSTOMMOD_CLOCK "custom.clock"
+
 //////////////////////////////////////////////
 // Mod installation
 //////////////////////////////////////////////
@@ -58,6 +63,11 @@ void CustomMod_DrawCustomMenu();
  * Register game hooks for "Random scale" mod.
  */
 void CustomMod_RegisterRandomScaleHooks();
+
+/**
+ * Render custom overlays.
+ */
+void CustomMod_DrawOverlay();
 
 //////////////////////////////////////////////
 // Getters
@@ -106,6 +116,15 @@ inline bool CustomMod_IsTimelessTunics()
 inline bool CustomMod_IsSyncTunics()
 {
     return CVarGetInteger(CUSTOMMOD_SYNC_TUNICS, false);
+}
+
+/**
+ * Get "Show clock" flag statement.
+ * \return `true` if mod is enabled
+ */
+inline bool CustomMod_IsClock()
+{
+    return CVarGetInteger(CUSTOMMOD_CLOCK, false);
 }
 
 #ifdef __cplusplus

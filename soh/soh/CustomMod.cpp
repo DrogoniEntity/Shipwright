@@ -10,6 +10,7 @@ extern "C"
 {
     #include <z64.h>
     #include "macros.h"
+    #include "CustomMod_Clock.h"
 }
 
 /**
@@ -53,6 +54,10 @@ void CustomMod_DrawCustomMenu()
         // Random Scale
         UIWidgets::PaddedEnhancementCheckbox("Random Player Growth", CUSTOMMOD_RANDOM_SCALE, true, false);
         UIWidgets::Tooltip("Make player's scale to change dynamically while playing and loading new scene (change between 1.0 to 2.0)");
+
+        // Show clock
+        UIWidgets::PaddedEnhancementCheckbox("Show clock", CUSTOMMOD_CLOCK, true, false);
+        UIWidgets::Tooltip("Display in-game clock and console's clock");
 
         ImGui::EndMenu();
     }
@@ -104,6 +109,15 @@ void CustomMod_RegisterRandomScaleHooks()
         // Request to change scale on scene load
         frameToWait = 0;
     });
+}
+
+void CustomMod_DrawOverlay()
+{
+    if (gPlayState == nullptr)
+        return;
+
+    if (CustomMod_IsClock())
+        CustomModClock_Draw(gPlayState);
 }
 
 static void CustomMod_UpdatePlayerScale()

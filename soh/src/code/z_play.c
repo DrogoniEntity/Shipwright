@@ -18,6 +18,8 @@
 #include <time.h>
 #include <assert.h>
 
+#include "soh/CustomMod.h"
+
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
 Input* D_8012D1F8 = NULL;
@@ -1464,6 +1466,7 @@ void Play_DrawOverlayElements(PlayState* play) {
 
     if (gSaveContext.gameMode == 0) {
         Interface_Draw(play);
+        CustomMod_DrawOverlay();
     }
 
     Message_Draw(play);
